@@ -660,7 +660,43 @@
                         <td><?php echo $debtorBalance;?></td>
                         <td>
                           <div class="row text-center mx-1">
-                            <a href="#" class="p-2" style="color: black; background-color: #faab00; border-radius: 3px;"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
+                            <a data-bs-toggle="modal" data-bs-target="#editDebtor<?php echo $debtorID;?>" class="p-2 mb-1" style="color: black; background-color: #faab00; border-radius: 3px; cursor: pointer;"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
+                              <!-- edit Modal -->
+                              <div class="modal fade" id="editDebtor<?php echo $debtorID;?>" tabindex="-1" aria-labelledby="editDebtorLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="editDebtorLabel">Edit Debtor</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form action="adminProcess.php?debtorID=<?php echo $debtorID?>" method="POST">
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text"></span>
+                                          <input type="text" aria-label="First name" class="form-control" value="<?php echo $debtorFirstName; ?>" name="fname">
+                                          <input type="text" aria-label="Last name" class="form-control" value="<?php echo $debtorLastName; ?>" name="lname">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text"></span>
+                                          <input type="number" aria-label="Age" class="form-control" value="<?php echo $debtorAge; ?>" name="age">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text"></span>
+                                          <input type="number" aria-label="Number" class="form-control" value="<?php echo $debtorNumber; ?>" name="number">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text"></span>
+                                          <input type="text" aria-label="Address" class="form-control" value="<?php echo $debtorAddress; ?>" name="address">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="submit" class="btn btn-primary" name="saveChanges">Save changes</button>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             <a href="#" class="p-2" style="color: black; background-color: red; border-radius: 3px;"><i class="fa-solid fa-trash fs-5"></i></a>
                             <a href="#" class="p-2" style="color: black; background-color: skyblue; border-radius: 3px;"><i class="fa-solid fa-clock-rotate-left fs-5"></i></a>
                           </div>

@@ -25,6 +25,40 @@
         $addNewDebtor->execute();
         return $addNewDebtor;
     }
+    //check if debtor exsists
+    function checkDebtor($firstname, $lastname){
+        global $conn;
+        try{
+            $check = $conn->prepare("SELECT * FROM debtors WHERE debtor_firstname = ? AND debtor_lastname = ?");
+            $check->bindParam(1, $firstname);
+            $check->bindParam(2, $lastname);
+            $check->execute();
+            return $check;
+        }
+        catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+    function editDebtor($debtorID, $firstname, $lastname, $age, $number, $address){
+        global $conn;
+        try{    
+            $editDebtor = $conn->prepare("UPDATE debtors SET debtor_firstname = ?, debtor_lastname = ?, debtor_age = ?, debtor_number = ?, debtor_address = ? WHERE debtor_id = ?");
+            $editDebtor->bindParam(1, $firstname);
+            $editDebtor->bindParam(2, $lastname);
+            $editDebtor->bindParam(3, $age);
+            $editDebtor->bindParam(4, $number);
+            $editDebtor->bindParam(5, $address);
+            $editDebtor->bindParam(6, $debtorID);
+            $editDebtor->execute();
+            return $editDebtor;
+        }
+        catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+
     //admin login
     if(isset($_POST['adminLogin'])){
         try{
@@ -54,21 +88,6 @@
             die("Error: " . $e->getMessage());
         }
     }
-    //check if debtor exsists
-    function checkDebtor($firstname, $lastname){
-        global $conn;
-        try{
-            $check = $conn->prepare("SELECT * FROM debtors WHERE debtor_firstname = ? AND debtor_lastname = ?");
-            $check->bindParam(1, $firstname);
-            $check->bindParam(2, $lastname);
-            $check->execute();
-            return $check;
-        }
-        catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-    }
-
     // add new debtors
     if(isset($_POST['addNewDebtor'])){
         $firstname =strtoupper($_POST['fname']);
@@ -76,7 +95,7 @@
         $age = strtoupper($_POST['age']);
         $number = strtoupper($_POST['number']);
         $address = strtoupper($_POST['address']);
-
+        $balance = 0;
         $check = checkDebtor($firstname, $lastname);
         $checkRow = $check->rowCount();
         if($checkRow > 0){
@@ -88,7 +107,7 @@
             <?php
         }
         else{
-            $addDebtor = add($firstname, $lastname, $age, $number, $address);
+            $addDebtor = add($firstname, $lastname, $age, $number, $address, $balance);
             $count_add = $addDebtor->rowCount();
 
             if($count_add > 0){
@@ -107,6 +126,35 @@
                     </script>
                 <?php
             }
+        }
+    }
+    // edit debtor
+    if(isset($_POST['saveChanges'])){
+        $firstname = $_POST['fname'];
+        $lastname = $_POST['lname'];
+        $age = $_POST['age'];
+        $number = $_POST['number'];
+        $address = $_POST['address'];
+        $debtorID = $_GET['debtorID'];
+        
+        $edit = editDebtor($debtorID, $firstname, $lastname, $age, $number, $address);
+        $count_edit = $edit->rowCount();
+
+        if($count_edit > 0){
+            ?>
+                <script>
+                    alert("Success");
+                    window.location.href="debtors.php";
+                </script>
+            <?php
+        }
+        else{
+            ?>
+                <script>
+                    alert("Success");
+                    window.location.href="debtors.php";
+                </script>
+            <?php
         }
     }
 ?>
