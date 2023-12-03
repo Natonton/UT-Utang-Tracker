@@ -33,6 +33,7 @@
             $adminDetails = getAdminInfo($conn, $sessionName);
             foreach($adminDetails as $details){
                 $adminName = strtoupper($details[1]);
+                $adminID = $details[0];
             }
         }
     }
@@ -697,7 +698,56 @@
                                   </div>
                                 </div>
                               </div>
-                            <a href="#" class="p-2" style="color: black; background-color: red; border-radius: 3px;"><i class="fa-solid fa-trash fs-5"></i></a>
+                            <a data-bs-toggle="modal" data-bs-target="#deleteDebtor<?php echo $debtorID;?>" class="p-2 mb-1" style="color: black; background-color: red; border-radius: 3px; cursor: pointer;"><i class="fa-solid fa-trash fs-5"></i></a>
+                            <!-- delete modal -->
+                            <div class="modal fade" id="deleteDebtor<?php echo $debtorID;?>" tabindex="-1" aria-labelledby="deleteDebtorLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteDebtorLabel">Confirm Debtor</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="adminProcess.php?debtorID=<?php echo $debtorID?>">
+                                      <p class="text-warning">Are you want to delete <?php echo $debtorName?></p>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDelete<?php echo $debtorID?>">Confirm Delete</button>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- confirm delete modal-->
+                            <div class="modal fade" id="confirmDelete<?php echo $debtorID?>" tabindex="-1" aria-labelledby="deleteDebtorLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteDebtorLabel">Delete Debtor</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="adminProcess.php?debtorID=<?php echo $debtorID?>" method="POST">
+                                      <input type="hidden" name="debtorBalance" value="<?php echo $debtorBalance;?>">
+                                      <input type="hidden" name="adminID" value="<?php echo $adminID;?>">
+                                      <div class="input-group mb-3">
+                                          <span class="input-group-text"></span>
+                                          <input type="text" aria-label="Username" class="form-control" placeholder="Enter Admin Username" name="adminUsername" required>
+                                      </div>
+                                      <div class="input-group mb-3">
+                                          <span class="input-group-text"></span>
+                                          <input type="password" aria-label="Password" class="form-control" placeholder="Enter Admin Password" name="adminPassword" required>
+                                      </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#deleteDebtor<?php echo $debtorID;?>">Cancel</button>
+                                    <button type="submit" class="btn btn-danger" name="confirmDelete">Delete</button>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                             <a href="#" class="p-2" style="color: black; background-color: skyblue; border-radius: 3px;"><i class="fa-solid fa-clock-rotate-left fs-5"></i></a>
                           </div>
                         </td>

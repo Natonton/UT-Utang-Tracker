@@ -39,6 +39,7 @@
             echo "Error: " . $e->getMessage();
         }
     }
+    //edit debtor
     function editDebtor($debtorID, $firstname, $lastname, $age, $number, $address){
         global $conn;
         try{    
@@ -57,7 +58,41 @@
             return false;
         }
     }
-
+    //delete debtor
+    function deleteDebtor($debtorID){
+        global $conn;
+        try{
+            $delete_d = $conn->prepare("DELETE FROM debtors WHERE debtor_id = ?");
+            $delete_d->bindParam(1, $debtorID);
+            $delete_d->execute();
+            return $delete_d;
+        }
+        catch(PDOException $e){
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+    //get current admin
+    function getCurrentAdmin($adminID){
+        global $conn;
+        try{
+            $getCurAdmin = $conn->prepare("SELECT * FROM admin WHERE admin_id = ?");
+            $getCurAdmin->bindParam(1, $adminID);
+            $getCurAdmin->execute();
+            $admin = $getCurAdmin->fetch();
+            $info = [];
+            if($admin){
+                $adminUsername = $admin->admin_username;
+                $adminPassword = $admin->admin_password;
+                $info[] = [$adminUsername, $adminPassword];
+            }
+            return $info;
+        }
+        catch(PDOException $e){
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
 
     //admin login
     if(isset($_POST['adminLogin'])){
@@ -152,6 +187,49 @@
             ?>
                 <script>
                     alert("Success");
+                    window.location.href="debtors.php";
+                </script>
+            <?php
+        }
+    }
+    //delete debtor
+    if(isset($_POST['confirmDelete'])){
+        $adminID = $_POST['adminID'];
+        $username = $_POST['adminUsername'];
+        $password = $_POST['adminPassword'];
+        $getAdmin = getCurrentAdmin($adminID);
+        foreach($getAdmin as $admin){
+            $adminUsername = $admin[0];
+            $adminPassword = $admin[1];
+        }
+        if($adminUsername === $username && $adminPassword === $password){
+            $balance = intval($_POST['debtorBalance']);
+            if($balance >= 0){
+                $debtorID = $_GET['debtorID'];
+                $delete_d = deleteDebtor($debtorID);
+                $delete_r = $delete_d->rowCount();
+                if($delete_r > 0){
+                    ?>
+                    <script>
+                        alert("Successfully Deleted");
+                        window.location.href="debtors.php";
+                    </script>
+                <?php
+                }
+            }
+            else{
+                ?>
+                    <script>
+                        alert("Operation can't proceed, BALANCE: <?php echo $balance?>");
+                        window.location.href="debtors.php";
+                    </script>
+                <?php
+            }
+        }
+        else{
+            ?>
+                <script>
+                    alert("Wrong Admin Username or Password");
                     window.location.href="debtors.php";
                 </script>
             <?php
