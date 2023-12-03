@@ -658,7 +658,87 @@
                         <td><?php echo $debtorAge;?></td>
                         <td><?php echo $debtorNumber;?></td>
                         <td><?php echo $debtorAddress;?></td>
-                        <td><?php echo $debtorBalance;?></td>
+                        <td>
+                          <div class="row">
+                            <div class="col p-1">
+                              <?php echo $debtorBalance;?>
+                            </div>
+                            <div class="col p-1">
+                              <!-- minus balance -->
+                              <i class="fa-solid fa-circle-minus text-warning" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#minusBalance<?php echo $debtorID;?>"></i>
+                              <div class="modal fade" id="minusBalance<?php echo $debtorID;?>" tabindex="-1" aria-labelledby="minusBalance" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="minusBalance">Minus Balance</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form action="adminProcess.php?debtorID=<?php echo $debtorID?>&adminID=<?php echo $adminID;?>" method="POST">
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text text-danger">REMAINING BALANCE</span>
+                                          <input type="number" class="form-control fw-bold" value="<?php echo $debtorBalance;?>" name="balance" readonly>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text text-danger"></span>
+                                          <input type="number" class="form-control" placeholder="Enter ammount to deduct" name="ammount">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text text-danger"></span>
+                                          <input type="text" class="form-control" placeholder="Enter Admin Username" name="username">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text text-danger"></span>
+                                          <input type="password" class="form-control" placeholder="Enter Admin Password" name="password">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="submit" class="btn btn-primary" name="proceedMinus">Proceed</button>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- add balance -->
+                              <i class="fa-solid fa-circle-plus text-danger" style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#addBalance<?php echo $debtorID;?>"></i>
+                              <div class="modal fade" id="addBalance<?php echo $debtorID;?>" tabindex="-1" aria-labelledby="minusBalance" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="minusBalance">Add Balance</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form action="adminProcess.php?debtorID=<?php echo $debtorID?>" method="POST">
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text text-danger">REMAINING BALANCE</span>
+                                          <input type="text" class="form-control fw-bold" value="₱ <?php echo $debtorBalance;?>" name="balance" readonly>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text text-danger"></span>
+                                          <input type="number" class="form-control" placeholder="Enter ammount to add" name="ammount">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text text-danger"></span>
+                                          <input type="text" class="form-control" placeholder="Enter Admin Username" name="username" required>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text text-danger"></span>
+                                          <input type="password" class="form-control" placeholder="Enter Admin Password" name="password" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="submit" class="btn btn-primary" name="proceedAdd">Proceed</button>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
                         <td>
                           <div class="row text-center mx-1">
                             <a data-bs-toggle="modal" data-bs-target="#editDebtor<?php echo $debtorID;?>" class="p-2 mb-1" style="color: black; background-color: #faab00; border-radius: 3px; cursor: pointer;"><i class="fa-solid fa-pen-to-square fs-5"></i></a>
@@ -728,7 +808,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                   </div>
                                   <div class="modal-body">
-                                    <form action="adminProcess.php?debtorID=<?php echo $debtorID?>" method="POST">
+                                    <form action="adminProcess.php?debtorID=<?php echo $debtorID;?>" method="POST">
                                       <input type="hidden" name="debtorBalance" value="<?php echo $debtorBalance;?>">
                                       <input type="hidden" name="adminID" value="<?php echo $adminID;?>">
                                       <div class="input-group mb-3">

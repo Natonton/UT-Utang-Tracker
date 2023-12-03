@@ -93,7 +93,21 @@
             return false;
         }
     }
-
+    //get balance
+    function minusBalance($debtorID, $newBalance){
+        global $conn;
+        try{
+            $updateBalance = $conn->prepare("UPDATE debtors SET debtor_balance = ? WHERE debtor_id = ?");
+            $updateBalance->bindParam(1, $newBalance);
+            $updateBalance->bindParam(2, $debtorID);
+            $updateBalance->execute();
+            return $updateBalance;
+        }
+        catch(PDOException $e){
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
     //admin login
     if(isset($_POST['adminLogin'])){
         try{
@@ -230,6 +244,61 @@
             ?>
                 <script>
                     alert("Wrong Admin Username or Password");
+                    window.location.href="debtors.php";
+                </script>
+            <?php
+        }
+    }
+    //minus balance
+    if(isset($_POST['proceedMinus'])){
+        $adminID = $_GET['adminID'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $getAdmin = getCurrentAdmin($adminID);
+        foreach($getAdmin as $admin){
+            $adminUsername = $admin[0];
+            $adminPassword = $admin[1];
+        }
+        if($username === $adminUsername && $password === $adminPassword){
+            $debtorID = $_GET['debtorID'];
+            $debtorBalance = intval($_POST['balance']);
+            $ammount = intval($_POST['ammount']);
+            $newBalance = $debtorBalance - $ammount;
+            echo var_dump($debtorBalance);
+            echo var_dump($ammount);
+            if($ammount > $debtorBalance){
+                ?>
+                    <script>
+                        alert("Invalid deduction ammount");
+                        window.location.href="debtors.php";
+                    </script>
+                <?php
+            }
+            else{
+                $minus = minusBalance($debtorID, $newBalance);
+                $rminus = $minus->rowCount();
+                if($rminus > 0){
+                    ?>
+                        <script>
+                            alert("Deduction Succeed");
+                            window.location.href="debtors.php";
+                        </script>
+                    <?php
+                }
+                else{
+                    ?>
+                        <script>
+                            alert("Deduction Failed");
+                            window.location.href="debtors.php";
+                        </script>
+                    <?php
+                }
+            }
+        }
+        else{
+            ?>
+                <script>
+                    alert("WRONG ADMIN USERNAME OR PASSWORD");
                     window.location.href="debtors.php";
                 </script>
             <?php
