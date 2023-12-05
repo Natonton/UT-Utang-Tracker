@@ -218,7 +218,7 @@
         }
         if($adminUsername === $username && $adminPassword === $password){
             $balance = intval($_POST['debtorBalance']);
-            if($balance >= 0){
+            if($balance == 0){
                 $debtorID = $_GET['debtorID'];
                 $delete_d = deleteDebtor($debtorID);
                 $delete_r = $delete_d->rowCount();
