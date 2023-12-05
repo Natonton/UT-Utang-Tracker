@@ -108,6 +108,35 @@
             return false;
         }
     }
+    // time stamp
+    function timeStamp(){
+        $timezone = "Asia/Manila";
+        date_default_timezone_set($timezone);
+        $current_datetime = date('Y-m-d H:i:s');
+        return $current_datetime;
+    }
+    // add history
+    function addToHistory($history_adminName =  null, $history_debtorName =  null, $history_debtorID =  null, $history_item =  null, $history_note =  null, $history_action =  null, $history_newBal =  null, $history_remarks =  null, $history_dateTime){
+        global $conn;
+        try{
+            $addHistory = $conn->prepare("INSERT INTO history (history_adminName, history_debtorName, history_debtorID, history_item, history_note, history_action, history_newBal, history_remarks, history_dateTime) VALUES(?,?,?,?,?,?,?,?,?)");
+            $addHistory->bindParam(1, $history_adminName);
+            $addHistory->bindParam(2, $history_debtorName);
+            $addHistory->bindParam(3, $history_debtorID);
+            $addHistory->bindParam(4, $history_item);
+            $addHistory->bindParam(5, $history_note);
+            $addHistory->bindParam(6, $history_action);
+            $addHistory->bindParam(7, $history_newBal);
+            $addHistory->bindParam(8, $history_remarks);
+            $addHistory->bindParam(9, $history_dateTime);
+            $addHistory->execute();
+            return $addHistory;
+        }
+        catch(PDOException $e){
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
     //admin login
     if(isset($_POST['adminLogin'])){
         try{
@@ -264,8 +293,6 @@
             $debtorBalance = intval($_POST['balance']);
             $ammount = intval($_POST['ammount']);
             $newBalance = $debtorBalance - $ammount;
-            echo var_dump($debtorBalance);
-            echo var_dump($ammount);
             if($ammount > $debtorBalance){
                 ?>
                     <script>
@@ -276,8 +303,14 @@
             }
             else{
                 $minus = balance($debtorID, $newBalance);
+                $adminName = $_GET['adminName'];
+                $debtorName = $_GET['debtorName'];
+                $time = timeStamp();
+                $note = $_POST['note'];
+                $action = "-$ammount";
                 $rminus = $minus->rowCount();
                 if($rminus > 0){
+                    $addToHistory = addToHistory($adminName, $debtorName, $debtorID, null, $note, $action, $newBalance, "DEDUCT BALANCE", $time);
                     ?>
                         <script>
                             alert("Deduction Succeed");
@@ -304,18 +337,37 @@
             <?php
         }
     }
+    //add balance
     if(isset($_POST['proceedAdd'])){
         $balance = intval($_POST['balance']);
+        $adminName = $_GET['adminName'];
+        $debtorName = $_GET['debtorName'];
+        $item =$_POST['item'];
         $add=intval($_POST['ammount']);
         $newBalance = $balance + $add;
+        $action = "+$add";
         $debtorID = $_GET['debtorID'];
+        $note = $_POST['note'];
+        $remarks = "ADD BALANCE";
+        $time = timeStamp();
         $addbal = balance($debtorID, $newBalance);
         $countbal = $addbal->rowCount();
         if($countbal > 0){
-            echo "yey";
+            $history = addToHistory($adminName, $debtorName, $debtorID, $item, $note ,$action, $newBalance, $remarks, $time);
+            ?>
+                <script>
+                    alert("Add Succeed");
+                    window.location.href="debtors.php";
+                </script>
+            <?php
         }
         else{
-            echo "yogs";
+            ?>
+                <script>
+                    alert("Add Failed");
+                    window.location.href="debtors.php";
+                </script>
+            <?php
         }
     }
 ?>

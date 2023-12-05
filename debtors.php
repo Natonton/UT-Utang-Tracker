@@ -674,7 +674,7 @@
                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                      <form action="adminProcess.php?debtorID=<?php echo $debtorID?>&adminID=<?php echo $adminID;?>" method="POST">
+                                      <form action="adminProcess.php?debtorID=<?php echo $debtorID?>&adminID=<?php echo $adminID;?>&adminName=<?php echo $adminName;?>&debtorName=<?php echo $debtorName;?>" method="POST">
                                         <div class="input-group mb-3">
                                           <span class="input-group-text text-danger">REMAINING BALANCE</span>
                                           <input type="number" class="form-control fw-bold" value="<?php echo $debtorBalance;?>" name="balance" readonly>
@@ -682,6 +682,10 @@
                                         <div class="input-group mb-3">
                                           <span class="input-group-text text-danger"></span>
                                           <input type="number" class="form-control" placeholder="Enter ammount to deduct" name="ammount">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text text-danger"></span>
+                                          <input type="text" class="form-control" placeholder="Enter Note" name="note">
                                         </div>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text text-danger"></span>
@@ -710,7 +714,7 @@
                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                      <form action="adminProcess.php?debtorID=<?php echo $debtorID?>&adminName=<?php echo $adminName;?>" method="POST">
+                                      <form action="adminProcess.php?debtorID=<?php echo $debtorID?>&adminName=<?php echo $adminName;?>&debtorName=<?php echo $debtorName;?>" method="POST">
                                         <div class="input-group mb-3">
                                           <span class="input-group-text text-danger">REMAINING BALANCE</span>
                                           <input type="number" class="form-control fw-bold" value="<?php echo $debtorBalance;?>" name="balance" readonly>
@@ -718,6 +722,14 @@
                                         <div class="input-group mb-3">
                                           <span class="input-group-text text-danger"></span>
                                           <input type="number" class="form-control" placeholder="Enter ammount to add" name="ammount">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text text-danger"></span>
+                                          <input type="text" class="form-control" placeholder="Enter Note" name="note">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text text-danger"></span>
+                                          <input type="text" class="form-control" placeholder="Enter Item" name="item" required>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
