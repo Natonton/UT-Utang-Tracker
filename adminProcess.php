@@ -94,7 +94,7 @@
         }
     }
     //get balance
-    function minusBalance($debtorID, $newBalance){
+    function balance($debtorID, $newBalance){
         global $conn;
         try{
             $updateBalance = $conn->prepare("UPDATE debtors SET debtor_balance = ? WHERE debtor_id = ?");
@@ -275,7 +275,7 @@
                 <?php
             }
             else{
-                $minus = minusBalance($debtorID, $newBalance);
+                $minus = balance($debtorID, $newBalance);
                 $rminus = $minus->rowCount();
                 if($rminus > 0){
                     ?>
@@ -302,6 +302,20 @@
                     window.location.href="debtors.php";
                 </script>
             <?php
+        }
+    }
+    if(isset($_POST['proceedAdd'])){
+        $balance = intval($_POST['balance']);
+        $add=intval($_POST['ammount']);
+        $newBalance = $balance + $add;
+        $debtorID = $_GET['debtorID'];
+        $addbal = balance($debtorID, $newBalance);
+        $countbal = $addbal->rowCount();
+        if($countbal > 0){
+            echo "yey";
+        }
+        else{
+            echo "yogs";
         }
     }
 ?>

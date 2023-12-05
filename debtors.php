@@ -710,22 +710,14 @@
                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                      <form action="adminProcess.php?debtorID=<?php echo $debtorID?>" method="POST">
+                                      <form action="adminProcess.php?debtorID=<?php echo $debtorID?>&adminName=<?php echo $adminName;?>" method="POST">
                                         <div class="input-group mb-3">
                                           <span class="input-group-text text-danger">REMAINING BALANCE</span>
-                                          <input type="text" class="form-control fw-bold" value="₱ <?php echo $debtorBalance;?>" name="balance" readonly>
+                                          <input type="number" class="form-control fw-bold" value="<?php echo $debtorBalance;?>" name="balance" readonly>
                                         </div>
                                         <div class="input-group mb-3">
                                           <span class="input-group-text text-danger"></span>
                                           <input type="number" class="form-control" placeholder="Enter ammount to add" name="ammount">
-                                        </div>
-                                        <div class="input-group mb-3">
-                                          <span class="input-group-text text-danger"></span>
-                                          <input type="text" class="form-control" placeholder="Enter Admin Username" name="username" required>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                          <span class="input-group-text text-danger"></span>
-                                          <input type="password" class="form-control" placeholder="Enter Admin Password" name="password" required>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
