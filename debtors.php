@@ -57,6 +57,31 @@
       }
       return $debtorsInfo;
     }
+    function viewHistory($debtorID){
+      global $conn;
+      try{
+        $view = $conn->prepare("SELECT * FROM history WHERE history_debtorID = ? ORDER BY history_dateTime DESC");
+        $view->bindParam(1, $debtorID);
+        $view->execute();
+        $viewHis = $view->fetchAll();
+        $info = [];
+        foreach($viewHis as $view){
+          $hisID = $view->history_id;
+          $debtorName = $view->history_debtorName;
+          $action = $view->history_action;
+          $item = $view->history_item;
+          $note = $view->history_note;
+          $newBal = $view->history_newBal;
+          $adminName = $view->history_adminName;
+          $dateTime = $view->history_dateTime;
+          $info[] = [$debtorName, $action, $item, $note, $newBal, $adminName, $dateTime, $hisID];
+        }
+        return $info;
+      }
+      catch(PDOException $e){
+        die("Error: " . $e->getMessage());
+      }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -832,7 +857,70 @@
                                 </div>
                               </div>
                             </div>
-                            <a href="#" class="p-2" style="color: black; background-color: skyblue; border-radius: 3px;"><i class="fa-solid fa-clock-rotate-left fs-5"></i></a>
+                            <a data-bs-toggle="modal" data-bs-target="#viewHistory<?php echo $debtorID;?>" class="p-2" style="color: black; background-color: skyblue; border-radius: 3px; cursor:pointer;"><i class="fa-solid fa-clock-rotate-left fs-5"></i></a>
+                            <!-- view history Modal -->
+                            <div class="modal fade" id="viewHistory<?php echo $debtorID;?>" tabindex="-1" aria-labelledby="viewhistory" aria-hidden="true">
+                              <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="viewhistory">Modal title</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <h5 class="card-title">History of <?php echo $debtorName;?></h5>
+                                        <table class="table table-hover table-bordered">
+                                          <thead class="table-primary">
+                                            <tr>
+                                              <th scope="col">#</th>
+                                              <th scope="col">Action</th>
+                                              <th scope="col">Item</th>
+                                              <th scope="col">Note</th>
+                                              <th scope="col">New Balane</th>
+                                              <th scope="col">By: </th>
+                                              <th scope="col">Date and Time</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <?php
+                                              $histories = viewHistory($debtorID);
+                                              foreach($histories as $history){
+                                                $debtorName = $history[0];
+                                                $action = $history[1];
+                                                $item = $history[2];
+                                                $note = $history[3];
+                                                $newBal = $history[4];
+                                                $adminName = $history[5];
+                                                $dateTime = $history[6];
+                                                $hisID = $history[7];
+                                                ?>
+                                                  <tr>
+                                                    <th scope="row"><?php echo $hisID?></th>
+                                                    <td><?php echo $action;?></td>
+                                                    <td><?php echo $item;?></td>
+                                                    <td><?php echo $note;?></td>
+                                                    <td><?php echo $newBal;?></td>
+                                                    <td><?php echo $adminName;?></td>
+                                                    <td><?php echo $dateTime;?></td>
+                                                  </tr>
+                                                <?php
+                                              }
+                                            ?>
+                                            
+                                          </tbody>
+                                        </table>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-danger">Clear History</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </td>
                       </tr>

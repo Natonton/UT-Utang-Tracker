@@ -112,11 +112,13 @@
     function timeStamp(){
         $timezone = "Asia/Manila";
         date_default_timezone_set($timezone);
-        $current_datetime = date('Y-m-d H:i:s');
+        setlocale(LC_TIME, "en_US");
+        // $current_datetime = date('m-d-Y H:i:s');
+        $current_datetime = date('Y/d/m l H:i:s');
         return $current_datetime;
     }
     // add history
-    function addToHistory($history_adminName =  null, $history_debtorName =  null, $history_debtorID =  null, $history_item =  null, $history_note =  null, $history_action =  null, $history_newBal =  null, $history_remarks =  null, $history_dateTime){
+    function addToHistory($history_adminName =  null, $history_debtorName =  null, $history_debtorID =  null, $history_item =  null, $history_note =  null, $history_action =  null, $history_newBal =  null, $history_remarks =  null, $history_dateTime = null){
         global $conn;
         try{
             $addHistory = $conn->prepare("INSERT INTO history (history_adminName, history_debtorName, history_debtorID, history_item, history_note, history_action, history_newBal, history_remarks, history_dateTime) VALUES(?,?,?,?,?,?,?,?,?)");
