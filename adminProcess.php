@@ -1,5 +1,6 @@
 <?php
     include "conn.php";
+    include "inc/function.php";
     session_start();
     
     //get admin info function
