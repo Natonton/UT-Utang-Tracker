@@ -139,6 +139,20 @@
             return false;
         }
     }
+    //clear history
+    function clearHistory($debtorID){
+        global $conn;
+        try{
+            $clear = $conn->prepare("DELETE FROM history WHERE history_debtorID = ?");
+            $clear->bindParam(1, $debtorID);
+            $clear->execute();
+            return $clear;
+        }
+        catch(PDOException $e){
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
     //admin login
     if(isset($_POST['adminLogin'])){
         try{
@@ -370,6 +384,40 @@
                     window.location.href="debtors.php";
                 </script>
             <?php
+        }
+    }
+    //clear history
+    if(isset($_POST['clearHistory'])){
+        $balance = intval($_POST['balance']);
+        // echo var_dump($balance);
+        if($balance == 0){
+            $debtorID = $_GET['debtorID'];
+            $clear = clearHistory($debtorID);
+            $clear_c = $clear->rowCount();
+            if($clear_c > 0){
+                ?>
+                    <script>
+                        alert("History Cleared");
+                        window.location.href="debtors.php";
+                    </script>
+                <?php
+            }
+            else{
+                ?>
+                    <script>
+                        alert("ERROR! Please try again.");
+                        window.location.href="debtors.php";
+                    </script>
+                <?php
+            }
+        }
+        else{
+            ?>
+                    <script>
+                        alert("Operation can't proceed. REMAINING BALANCE: <?php echo $balance; ?>");
+                        window.location.href="debtors.php";
+                    </script>
+                <?php
         }
     }
 ?>

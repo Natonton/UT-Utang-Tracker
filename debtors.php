@@ -608,7 +608,7 @@
             <h5 class="card-title">Debtor Master List</h5>
 
             <!-- Table with hoverable rows -->
-            <table class="table table-hover table-bordered table-responsive text-center">
+            <table class="table table-hover table-bordered table-responsive text-center " id="debtorTable">
               <thead>
                 <tr class="table-danger">
                   <th scope="col">#</th>
@@ -623,10 +623,16 @@
               
               <tbody>
               <div class="row">
-                <a href="debtors.php"><button type="button" class="btn btn-primary mb-3"><i class="fa-solid fa-arrows-rotate"></i></button></a>
-                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addNewDebtor">
-                  Add new debtor
-                </button>
+                <div class="col">
+                  
+                  <div class="input-group mb-3 w-25">
+                    <a href="debtors.php" class="me-3"><button type="button" class="btn btn-primary "><i class="fa-solid fa-arrows-rotate"></i></button></a>
+                      <input type="text" class="form-control mx-1" placeholder="search.." id="search">
+                  </div>
+                </div>
+                  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addNewDebtor">
+                    Add new debtor
+                  </button>
               </div>
                 
                 <!-- Add new debtor modal -->
@@ -870,7 +876,7 @@
                                     <div class="card">
                                       <div class="card-body">
                                         <h5 class="card-title">History of <?php echo $debtorName;?></h5>
-                                        <table class="table table-hover table-bordered">
+                                        <table class="table table-hover table-bordered datatable">
                                           <thead class="table-primary">
                                             <tr>
                                               <th scope="col">#</th>
@@ -915,8 +921,11 @@
                                     </div>
                                   </div>
                                   <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-danger">Clear History</button>
+                                    <form action="adminProcess.php?debtorID=<?php echo $debtorID;?>" method="POST">
+                                      <input type="hidden" name="balance" value="<?php echo $debtorBalance;?>">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="submit" name="clearHistory" class="btn btn-danger">Clear History</button>
+                                    </form>
                                   </div>
                                 </div>
                               </div>
@@ -961,9 +970,20 @@
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script> //script for search table
+    $(document).ready(function(){
+      $("#search").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#debtorTable tbody tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+      });
+    });
+</script>
 
 </body>
 
