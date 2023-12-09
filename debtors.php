@@ -1,23 +1,8 @@
 <?php
     include "conn.php";
+    include "inc/function.php";
     session_start();
-    // getting all admin info
-    function getAdminInfo($conn, $adminUsername){
-        $getAdmin = $conn->prepare("SELECT * FROM admin WHERE admin_username = ? ");
-        $getAdmin->bindParam(1, $adminUsername);
-        $getAdmin->execute();
-        $infos = $getAdmin->fetchAll();
-        $adminInfo = [];
-        foreach($infos as $info){
-            $adminID = $info->admin_id;
-            $adminName = $info->admin_name;
-            $adminUsername = $info->admin_username;
-            $adminInfo[] = [$adminID, $adminName, $adminUsername];
-        }
-        return $adminInfo;
-    }
-
-
+    
     try{
         if(empty($_SESSION)){
             ?>
@@ -40,48 +25,7 @@
     catch(PDOException $e){
         die("Error: " . $e->getMessage());
     }
-    function getAllDebtorsInfo($conn){
-      $getDebtors = $conn->prepare("SELECT * FROM debtors");
-      $getDebtors->execute();
-      $infos = $getDebtors->fetchAll();
-      $debtorsInfo = [];
-      foreach($infos as $debtor){
-        $d_id = $debtor->debtor_id;
-        $d_firstname = $debtor->debtor_firstname;
-        $d_lastname = $debtor->debtor_lastname;
-        $d_age = $debtor->debtor_age;
-        $d_number = $debtor->debtor_number;
-        $d_address = $debtor->debtor_address;
-        $d_balance = $debtor->debtor_balance;
-        $debtorsInfo[] = [$d_id, $d_firstname, $d_lastname, $d_age, $d_number, $d_address, $d_balance]; 
-      }
-      return $debtorsInfo;
-    }
-    function viewHistory($debtorID){
-      global $conn;
-      try{
-        $view = $conn->prepare("SELECT * FROM history WHERE history_debtorID = ? ORDER BY history_dateTime DESC");
-        $view->bindParam(1, $debtorID);
-        $view->execute();
-        $viewHis = $view->fetchAll();
-        $info = [];
-        foreach($viewHis as $view){
-          $hisID = $view->history_id;
-          $debtorName = $view->history_debtorName;
-          $action = $view->history_action;
-          $item = $view->history_item;
-          $note = $view->history_note;
-          $newBal = $view->history_newBal;
-          $adminName = $view->history_adminName;
-          $dateTime = $view->history_dateTime;
-          $info[] = [$debtorName, $action, $item, $note, $newBal, $adminName, $dateTime, $hisID];
-        }
-        return $info;
-      }
-      catch(PDOException $e){
-        die("Error: " . $e->getMessage());
-      }
-    }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
