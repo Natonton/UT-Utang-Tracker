@@ -18,6 +18,7 @@
           foreach($adminDetails as $details){
               $adminName = strtoupper($details[1]);
               $adminID = $details[0];
+              $adminUsername  = $details[2];
               $adminPic = $details[3];
           }
       }
@@ -250,31 +251,31 @@
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                  <form>
-
+                  <form action="adminProcess.php?adminUsername=<?php echo $adminUsername;?>" method="POST">
+                    <input type="hidden" value="<?php echo $adminUsername;?>" name = "adminUsername">
                     <div class="row mb-3">
                       <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
+                        <input name="password" type="password" class="form-control" id="currentPassword" required>
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="newpassword" type="password" class="form-control" id="newPassword">
+                        <input name="newpassword" type="password" class="form-control" id="newPassword" required>
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                        <input name="renewpassword" type="password" class="form-control" id="renewPassword" required>
                       </div>
                     </div>
 
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Change Password</button>
+                      <button type="submit" class="btn btn-primary" name="changePW" onclick="return validate_match_password()">Change Password</button>
                     </div>
                   </form><!-- End Change Password Form -->
 
@@ -319,6 +320,19 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script>
+    function validate_match_password(){
+                var password = document.getElementById("newPassword").value;
+                var confirmPassword = document.getElementById("renewPassword").value;
+                if (password != confirmPassword){
+                    alert("Passwords Don't Match! Please Try Again");
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+  </script>
 
 </body>
 

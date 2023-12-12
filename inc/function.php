@@ -25,6 +25,21 @@
         }
         return $adminInfo;
     }
+    //change admin password
+    function changeAdminPW($newPass, $adminUsername){
+        try{
+            global $conn;
+            $change = $conn->prepare("UPDATE admin SET admin_password = ? WHERE admin_username = ? ");
+            $change->bindParam(1, $newPass);
+            $change->bindParam(2, $adminUsername);
+            $change->execute();
+            return $change;
+        }
+        catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
     //edit admin info
     function editAdmin($admin_name, $admin_pic, $admin_id){
         global $conn;

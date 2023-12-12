@@ -65,6 +65,34 @@
         }
 
     }
+    //change password admin
+    if(isset($_POST['changePW'])){
+        $curpass = $_POST['password'];
+        $adminUsername = $_GET['adminUsername'];
+        $ver = verAdmin($curpass, $adminUsername);
+        $countVer = $ver->rowCount();
+        if($countVer > 0 ){
+            $newPW = $_POST['newpassword'];
+            $change = changeAdminPW($newPW, $adminUsername);
+            $countChange = $change->rowCount();
+            if($countChange > 0){
+                ?>
+                    <script>
+                        alert("PASSWORD CHANGED SUCCESSFULLY");
+                        window.location.href="admin-profile.php";
+                    </script>
+                <?php
+            }
+        }
+        else{
+            ?>
+                <script>
+                    alert("WRONG CURRENT PASSWORD");
+                    window.location.href="admin-profile.php";
+                </script>
+            <?php
+        }
+    }
     // add new debtors
     if(isset($_POST['addNewDebtor'])){
         $firstname =strtoupper($_POST['fname']);
