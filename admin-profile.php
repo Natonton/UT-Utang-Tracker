@@ -92,7 +92,7 @@
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
               <img src="assets/img/<?php echo $adminPic;?>" alt="Profile" class="rounded-circle">
-              <h2><?php echo $adminName;?> hello</h2>
+              <h2><?php echo $adminName;?></h2>
               <h3></h3>
               <div class="social-links mt-2">
                 <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
