@@ -1,6 +1,6 @@
 <?php
     include "conn.php";
-    include "inc/function.php";
+    include_once "inc/function.php";
     session_start();
     
 
@@ -9,7 +9,7 @@
         try{
             $get_username = $_POST['e_username'];
             $get_password = $_POST['e_password'];
-            $get_result = getAdmin($get_username, $get_password);
+            $get_result = verAdmin($get_username, $get_password);
             $get_row_count = $get_result->rowCount();
             if($get_row_count > 0 ){
                 $_SESSION['adminName'] = $get_username;
@@ -32,6 +32,38 @@
         catch(PDOException $e){
             die("Error: " . $e->getMessage());
         }
+    }
+    //edit admin
+    if(isset($_POST['editAdmin'])){
+        $adminID = $_GET['adminID'];
+        $picName = $_FILES['pp']['name'];
+        $tempName = $_FILES['pp']['tmp_name'];
+        $newAdminName = $_POST['fullName'];
+        $cur = getCurrentAdmin($adminID);
+        foreach ($cur as $adminName){
+            $adminUsername = $adminName[0];
+        }
+        $edit = editAdmin($newAdminName, $picName, $adminID);
+        if($edit > 0 ){
+            $des = 'assets/img/'.$picName;
+            move_uploaded_file($tempName, $des);
+            // echo var_dump($des);
+            ?>
+                <script>
+                    alert("Edit Succeed");
+                    window.location.href="admin-profile.php";
+                </script>
+            <?php
+        }
+        else{
+            ?>
+                <script>
+                    alert("Edit Failed");
+                    window.location.href="admin-profile.php";
+                </script>
+            <?php
+        }
+
     }
     // add new debtors
     if(isset($_POST['addNewDebtor'])){

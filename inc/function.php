@@ -1,12 +1,46 @@
 <?php
+    include "conn.php";
     //get admin info function
-    function getAdmin($username, $password){
+    function verAdmin($username, $password){
         global $conn;
         $get_admin = $conn->prepare("SELECT * FROM admin WHERE admin_username = ? AND admin_password = ?");
         $get_admin->bindParam(1, $username);
         $get_admin->bindParam(2, $password);
         $get_admin->execute();
         return $get_admin;
+    }
+    // getting all admin info
+    function getAdminInfo($conn, $adminUsername){
+        $getAdmin = $conn->prepare("SELECT * FROM admin WHERE admin_username = ? ");
+        $getAdmin->bindParam(1, $adminUsername);
+        $getAdmin->execute();
+        $infos = $getAdmin->fetchAll();
+        $adminInfo = [];
+        foreach($infos as $info){
+            $adminID = $info->admin_id;
+            $adminName = $info->admin_name;
+            $adminUsername = $info->admin_username;
+            $adminPic = $info->admin_pic;
+            $adminInfo[] = [$adminID, $adminName, $adminUsername, $adminPic];
+        }
+        return $adminInfo;
+    }
+    //edit admin info
+    function editAdmin($admin_name, $admin_pic, $admin_id){
+        global $conn;
+        try{
+            $edit = $conn -> prepare("UPDATE admin SET admin_name = ?, admin_pic = ? WHERE admin_id = ?");
+            $edit->bindParam(1, $admin_name);
+            $edit->bindParam(2, $admin_pic);
+            $edit->bindParam(3, $admin_id);
+            $edit->execute();
+            $count = $edit->rowCount();
+            return $count;
+        }
+        catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
     }
     // add function
     function add($firstname, $lastname, $age, $number, $address, $balance){
@@ -81,7 +115,8 @@
             if($admin){
                 $adminUsername = $admin->admin_username;
                 $adminPassword = $admin->admin_password;
-                $info[] = [$adminUsername, $adminPassword];
+                $adminName =$admin->admin_name;
+                $info[] = [$adminUsername, $adminPassword, $adminName];
             }
             return $info;
         }
@@ -149,21 +184,6 @@
             echo "Error: " . $e->getMessage();
             return false;
         }
-    }
-    // getting all admin info
-    function getAdminInfo($conn, $adminUsername){
-        $getAdmin = $conn->prepare("SELECT * FROM admin WHERE admin_username = ? ");
-        $getAdmin->bindParam(1, $adminUsername);
-        $getAdmin->execute();
-        $infos = $getAdmin->fetchAll();
-        $adminInfo = [];
-        foreach($infos as $info){
-            $adminID = $info->admin_id;
-            $adminName = $info->admin_name;
-            $adminUsername = $info->admin_username;
-            $adminInfo[] = [$adminID, $adminName, $adminUsername];
-        }
-        return $adminInfo;
     }
     function getAllDebtorsInfo($conn){
         $getDebtors = $conn->prepare("SELECT * FROM debtors");

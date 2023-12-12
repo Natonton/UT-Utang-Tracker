@@ -1,6 +1,6 @@
 <?php
     include "conn.php";
-    include "inc/function.php";
+    include_once "inc/function.php";
     session_start();
     
     try{
@@ -19,6 +19,7 @@
             foreach($adminDetails as $details){
                 $adminName = strtoupper($details[1]);
                 $adminID = $details[0];
+                $adminPic = $details[3];
             }
         }
     }

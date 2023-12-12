@@ -1,23 +1,7 @@
 <?php
     include "conn.php";
+    include_once "inc/function.php";
     session_start();
-    // getting all admin info
-    function getAdminInfo($conn, $adminUsername){
-        $getAdmin = $conn->prepare("SELECT * FROM admin WHERE admin_username = ? ");
-        $getAdmin->bindParam(1, $adminUsername);
-        $getAdmin->execute();
-        $infos = $getAdmin->fetchAll();
-        $adminInfo = [];
-        foreach($infos as $info){
-            $adminID = $info->admin_id;
-            $adminName = $info->admin_name;
-            $adminUsername = $info->admin_username;
-            $adminInfo[] = [$adminID, $adminName, $adminUsername];
-        }
-        return $adminInfo;
-    }
-
-
     try{
         if(empty($_SESSION)){
             ?>
@@ -33,6 +17,7 @@
             $adminDetails = getAdminInfo($conn, $sessionName);
             foreach($adminDetails as $details){
                 $adminName = strtoupper($details[1]);
+                $adminPic = $details[3];
             }
         }
     }
