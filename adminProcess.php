@@ -1,6 +1,15 @@
 <?php
     include "conn.php";
     include_once "inc/function.php";
+    
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    use PHPMailer\PHPMailer\SMTP;
+
+
+    require 'inc/PHPMailer/src/PHPMailer.php';
+    require 'inc/PHPMailer/src/Exception.php';
+    require 'inc/PHPMailer/src/SMTP.php';
     session_start();
     
 
@@ -385,5 +394,39 @@
         }
         curl_close($ch);
         
+    }
+    //notify thru email
+    if(isset($_POST['emailnotif'])){
+        $debtorEmail = $_POST['email'];
+        $messageSubject = "UTANG MO";
+        $message = $_POST['message'];
+
+
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'utanng.proj@gmail.com';
+        $mail->Password = 'njfyvvwdccoplomr';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom('utanng.proj@gmail.com');
+        $mail->addAddress($debtorEmail);
+        $mail->isHTML(true);
+        $mail->Subject = $messageSubject;
+        $mail->Body = $message;
+
+        if ($mail->send()) {
+            ?>
+                <Script>
+                    alert("Message sent");
+                    window.location.href="debtors.php";
+                </Script>
+            <?php
+        } else {
+            echo 'Mailer Error: ' . $mail->ErrorInfo;
+        }
+
     }
 ?>

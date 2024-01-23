@@ -413,13 +413,13 @@
                                 </div>
                               </div>
                             </div>
-                            <a data-bs-toggle="modal" data-bs-target="#notify<?php echo $debtorID;?>" class="p-2" style="color: black; background-color: green; border-radius: 3px; cursor:pointer;"><i class="fa-solid fa-bell fs-5"></i></a>
-                            <!-- notify modal-->
+                            <a data-bs-toggle="modal" data-bs-target="#notify<?php echo $debtorID;?>" class="p-2 mb-1" style="color: black; background-color: green; border-radius: 3px; cursor:pointer;"><i class="fa-solid fa-bell fs-5"></i></a>
+                            <!-- notify sms modal-->
                             <div class="modal fade" id="notify<?php echo $debtorID?>" tabindex="-1" aria-labelledby="deleteDebtorLabel" aria-hidden="true">
                               <div class="modal-dialog">
                                 <div class="modal-content">
                                   <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="deleteDebtorLabel">Delete Debtor</h1>
+                                    <h1 class="modal-title fs-5" id="deleteDebtorLabel">SMS Debtor</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                   </div>
                                   <div class="modal-body">
@@ -441,6 +441,43 @@
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
                                     <button type="submit" class="btn btn-success" name="notify">Proceed</button>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <a data-bs-toggle="modal" data-bs-target="#email<?php echo $debtorID;?>" class="p-2" style="color: black; background-color: green; border-radius: 3px; cursor:pointer;"><i class="fa-solid fa-envelope fs-5"></i></a>
+                            <!-- notify email modal-->
+                            <div class="modal fade" id="email<?php echo $debtorID?>" tabindex="-1" aria-labelledby="deleteDebtorLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteDebtorLabel">Email Debtor</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="adminProcess.php?debtorID=<?php echo $debtorID;?>" method="POST">
+                                    <div class="input-group mb-3">
+                                          <span class="input-group-text"></span>
+                                          <input type="text" aria-label="First name" class="form-control" value="<?php echo $debtorFirstName; ?>" name="fname" readonly>
+                                          <input type="text" aria-label="Last name" class="form-control" value="<?php echo $debtorLastName; ?>" name="lname" readonly>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text"></span>
+                                          <input type="text" aria-label="First name" class="form-control" value="<?php echo $debtorNumber; ?>" name="number" readonly>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                          <span class="input-group-text"></span>
+                                          <input type="email" aria-label="First name" class="form-control" name="email" required>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                                <span class="input-group-text"><i class="fa-solid fa-message"></i></span>
+                                                <textarea class="form-control" id="#" rows="3"  name="message" >Hi your <?php echo $debtorName;?> remaining balance is <?php echo $debtorBalance;?>php  . Please pay!!</textarea>
+                                        </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-success" name="emailnotif">Proceed</button>
                                     </form>
                                   </div>
                                 </div>
