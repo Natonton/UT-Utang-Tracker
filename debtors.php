@@ -435,7 +435,7 @@
                                         </div>
                                         <div class="input-group mb-3">
                                                 <span class="input-group-text"><i class="fa-solid fa-message"></i></span>
-                                                <textarea class="form-control" id="#" rows="3"  name="message" >Hi your <?php echo $debtorName;?> remaining balance is <?php echo $debtorBalance;?>php  . Please pay!!</textarea>
+                                                <textarea class="form-control" id="#" rows="3"  name="message" >Hi <?php echo $debtorName;?> remaining balance is <?php echo $debtorBalance;?>php  . Please pay!!</textarea>
                                         </div>
                                   </div>
                                   <div class="modal-footer">
@@ -472,7 +472,7 @@
                                         </div>
                                         <div class="input-group mb-3">
                                                 <span class="input-group-text"><i class="fa-solid fa-message"></i></span>
-                                                <textarea class="form-control" id="#" rows="3"  name="message" >Hi your <?php echo $debtorName;?> remaining balance is <?php echo $debtorBalance;?>php  . Please pay!!</textarea>
+                                                <textarea class="form-control" id="#" rows="3"  name="message" >Hi <?php echo $debtorName;?> remaining balance is <?php echo $debtorBalance;?>php  . Please pay!!</textarea>
                                         </div>
                                   </div>
                                   <div class="modal-footer">
